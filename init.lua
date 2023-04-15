@@ -1,3 +1,8 @@
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
+local utils = require "astronvim.utils"
+local is_available = utils.is_available
+
 return {
   -- Configure AstroNvim updates
   updater = {
@@ -16,16 +21,13 @@ return {
       --   ["remote3"] = "github_user", -- GitHub user assume AstroNvim fork
     },
   },
-
   -- Set colorscheme to use
   colorscheme = "ayu",
-
   -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
   diagnostics = {
     virtual_text = true,
     underline = true,
   },
-
   lsp = {
     -- customize lsp formatting options
     formatting = {
@@ -53,7 +55,6 @@ return {
       -- "pyright"
     },
   },
-
   -- Configure require("lazy").setup() options
   lazy = {
     defaults = { lazy = true },
@@ -64,22 +65,23 @@ return {
       },
     },
   },
-
   -- This function is run last and is a good place to configuring
   -- augroups/autocommands and custom filetypes also this just pure lua so
   -- anything that doesn't fit in the normal config locations above can go here
   polish = function()
-    -- Set up custom filetypes
-    -- vim.filetype.add {
-    --   extension = {
-    --     foo = "fooscript",
-    --   },
-    --   filename = {
-    --     ["Foofile"] = "fooscript",
-    --   },
-    --   pattern = {
-    --     ["~/%.config/foo/.*"] = "fooscript",
-    --   },
-    -- }
+    if is_available "neo-tree.nvim" then
+      local group_name = augroup("neotree_settings", { clear = true })
+      autocmd("VimEnter", {
+        desc = "Start neotree when vim enter",
+        group = group_name,
+        callback = function()
+          if vim.bo.filetype == "neo-tree" then
+            vim.cmd.wincmd "p"
+          else
+            vim.cmd.Neotree "focus"
+          end
+        end,
+      })
+    end
   end,
 }
