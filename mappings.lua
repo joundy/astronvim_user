@@ -7,6 +7,7 @@ local function termcodes(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
+-- Tab
 maps.n["<C-l>"] =
   { function() require("astronvim.utils.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end, desc = "Next buffer" }
 maps.n["<C-h>"] = {
@@ -14,10 +15,15 @@ maps.n["<C-h>"] = {
   desc = "Previous buffer",
 }
 
-maps.t["jk"] = { termcodes "<C-\\><C-N>", desc = "   escape terminal mode" }
-maps.t["JK"] = { termcodes "<C-\\><C-N>", desc = "   escape terminal mode" }
+-- Buffer
+maps.n["<leader>x"] = { function() require("astronvim.utils.buffer").close() end, desc = "Close buffer" }
+maps.n["<leader>X"] = { function() require("astronvim.utils.buffer").close(0, true) end, desc = "Force close buffer" }
+maps.n["<leader>bx"] =
+  { function() require("astronvim.utils.buffer").close_all(true) end, desc = "Close all buffers except current" }
+maps.n["<leader>bX"] = { function() require("astronvim.utils.buffer").close_all() end, desc = "Close all buffers" }
 
--- Hop
+
+-- Moving
 if is_available "hop.nvim" then 
   maps.n["f"] = { ":HopWord <CR>", desc = "Hop search" }
 end
@@ -45,6 +51,8 @@ if is_available "telescope.nvim" then
 end
 
 -- Terminal
+maps.t["jk"] = { termcodes "<C-\\><C-N>", desc = "   escape terminal mode" }
+maps.t["JK"] = { termcodes "<C-\\><C-N>", desc = "   escape terminal mode" }
 if is_available "toggleterm.nvim" then
   maps.n["<leader>h"] = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "ToggleTerm horizontal split" }
   maps.n["<leader>v"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "ToggleTerm vertical split" }
