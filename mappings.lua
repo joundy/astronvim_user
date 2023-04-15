@@ -58,5 +58,11 @@ if is_available "toggleterm.nvim" then
   maps.n["<leader>v"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "ToggleTerm vertical split" }
 end
 
+-- Git vim-fugitive
+if is_available "vim-fugitive" then
+  maps.n["<leader>gf"] = { ":G <cr>", desc = "Open Git Vim Fugitive" }
+end
+
+
 
 return maps
