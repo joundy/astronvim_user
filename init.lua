@@ -69,19 +69,19 @@ return {
   -- augroups/autocommands and custom filetypes also this just pure lua so
   -- anything that doesn't fit in the normal config locations above can go here
   polish = function()
-    if is_available "neo-tree.nvim" then
-      local group_name = augroup("neotree_settings", { clear = true })
-      autocmd("VimEnter", {
-        desc = "Start neotree when vim enter",
-        group = group_name,
-        callback = function()
-          if vim.bo.filetype == "neo-tree" then
-            vim.cmd.wincmd "p"
-          else
-            vim.cmd.Neotree "focus"
-          end
-        end,
-      })
-    end
+    -- if is_available "neo-tree.nvim" then
+    --   local group_name = augroup("neotree_settings", { clear = true })
+    --   autocmd("VimEnter", {
+    --     desc = "Start neotree when vim enter",
+    --     group = group_name,
+    --     callback = function()
+    --       if vim.bo.filetype == "neo-tree" then
+    --         vim.cmd.wincmd "p"
+    --       else
+    --         vim.cmd.Neotree "focus"
+    --       end
+    --     end,
+    --   })
+    -- end
   end,
 }

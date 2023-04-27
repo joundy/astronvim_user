@@ -3,9 +3,7 @@ local is_available = utils.is_available
 
 local maps = { i = {}, n = {}, v = {}, t = {} }
 
-local function termcodes(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
+local function termcodes(str) return vim.api.nvim_replace_termcodes(str, true, true, true) end
 
 -- Tab
 maps.n["<C-l>"] =
@@ -22,22 +20,20 @@ maps.n["<leader>bx"] =
   { function() require("astronvim.utils.buffer").close_all(true) end, desc = "Close all buffers except current" }
 maps.n["<leader>bX"] = { function() require("astronvim.utils.buffer").close_all() end, desc = "Close all buffers" }
 
+-- navigation insert mode
+maps.i["<C-h>"] = { "<Left>", desc = "move left" }
+maps.i["<C-l>"] = { "<Right>", desc = "move right" }
+maps.i["<C-j>"] = { "<Down>", desc = "move down" }
+maps.i["<C-k>"] = { "<Up>", desc = "move up" }
 
 -- Moving
-if is_available "hop.nvim" then 
-  maps.n["f"] = { ":HopWord <CR>", desc = "Hop search" }
-end
+if is_available "hop.nvim" then maps.n["f"] = { ":HopWord <CR>", desc = "Hop search" } end
 
+-- if vim.bo.filetype == "neo-tree" then
 -- Neo tree
-if is_available "neo-tree.nvim" then
+if is_available "nvim-tree.lua" then
   maps.n["<C-n>"] = {
-    function()
-      if vim.bo.filetype == "neo-tree" then
-        vim.cmd.wincmd "p"
-      else
-        vim.cmd.Neotree "focus"
-      end
-    end,
+    function() vim.cmd.NvimTreeToggle "focus" end,
     desc = "Toggle Explorer Focus",
   }
 end
@@ -51,18 +47,24 @@ if is_available "telescope.nvim" then
 end
 
 -- Terminal
-maps.t["jk"] = { termcodes "<C-\\><C-N>", desc = "   escape terminal mode" }
-maps.t["JK"] = { termcodes "<C-\\><C-N>", desc = "   escape terminal mode" }
 if is_available "toggleterm.nvim" then
-  maps.n["<leader>h"] = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "ToggleTerm horizontal split" }
-  maps.n["<leader>v"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "ToggleTerm vertical split" }
+  maps.t["jk"] = { termcodes "<C-\\><C-N>", desc = "   escape terminal mode" }
+  maps.t["JK"] = { termcodes "<C-\\><C-N>", desc = "   escape terminal mode" }
+  maps.n["<leader>h"] = {
+    function()
+      if not (vim.bo.filetype == "NvimTree") then vim.cmd.ToggleTerm "size=10 direction=horizontal" end
+    end,
+    desc = "ToggleTerm horizontal split",
+  }
+  maps.n["<leader>v"] = {
+    function()
+      if not (vim.bo.filetype == "NvimTree") then vim.cmd.ToggleTerm "size=80 direction=vertical" end
+    end,
+    desc = "ToggleTerm horizontal split",
+  }
 end
 
 -- Git vim-fugitive
-if is_available "vim-fugitive" then
-  maps.n["<leader>gf"] = { ":G <cr>", desc = "Open Git Vim Fugitive" }
-end
-
-
+if is_available "vim-fugitive" then maps.n["<leader>gf"] = { ":G <cr>", desc = "Open Git Vim Fugitive" } end
 
 return maps

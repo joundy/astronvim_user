@@ -16,7 +16,7 @@ return {
     end,
   },
   -- You can disable default plugins as follows:
-  -- { "goolord/alpha-nvim", enabled = false },
+  { "goolord/alpha-nvim", enabled = false },
   --
   -- You can also easily customize additional setup of plugins that is outside of the plugin's setup call
   -- {
